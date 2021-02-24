@@ -11,13 +11,13 @@ const App: React.FC = () => {
   const [cells, setCells] = useState<Cell[][]>(GenerateCells());
 
   const renderCells = () : React.ReactNode => {
-    return cells.map((row: any[], rowIndex: any) =>
-    row.map((_cell: any, colIndex: any) =>
-     <Button key={`${rowIndex}-${colIndex}`} />)
+    return cells.map((row, rowIndex) =>
+    row.map((cell, colIndex) =>
+     <Button key={`${rowIndex}-${colIndex}`} state={cell. state} value={cell. value} row={rowIndex} col={colIndex} />)
     )
   };
     
-  return (
+  return (                          
     <div className="App">
       <div className="Header">
         <NumberDisplay value={0} />

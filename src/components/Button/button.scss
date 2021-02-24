@@ -2,7 +2,8 @@
 
 
 .Button {
-  @include border;
+  @include borders;
+  @include buttons;
   align-items: center;
   display: flex;
   font-weight: bold;
