@@ -1,6 +1,7 @@
 import { MAX_COLS, MAX_ROWS, NO_OF_BOMBS } from '../constants';
 import { Cell, CellValue, CellState } from '../types';
 
+
 export const GenerateCells = () => {
     let cells: Cell[][] = [];
 
@@ -85,3 +86,4 @@ export const GenerateCells = () => {
 
     return cells;
 }
+

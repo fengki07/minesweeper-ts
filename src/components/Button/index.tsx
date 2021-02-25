@@ -4,12 +4,14 @@ import "./button.scss";
 
 interface Buttonprops {
   row: number;
+  onClick(rowParam: number, colParam: number): (...args: any[]) => void;
+  onContext(rowParam: number, colParam: number): (...args: any[]) => void;
   col: number;
   state: CellState;
   value: CellValue;
 }
 
-const Button: React.FC<Buttonprops> = ({ row, col, state, value }) => {
+const Button: React.FC<Buttonprops> = ({ row, col,onClick,onContext, state, value }) => {
   const renderContent = (): React.ReactNode => {
     if (state === CellState.visible) {
       if (value === CellValue.bomb) {
@@ -33,8 +35,9 @@ const Button: React.FC<Buttonprops> = ({ row, col, state, value }) => {
     return null ;
   }
   
-  return <div className={`Button ${state === CellState.visible ? "visible" : "" } value-${value}`} >
-    {renderContent()}
+  return <div className={`Button ${state === CellState.visible ? "visible" : "" } value-${value}`} 
+    onClick={onClick(row, col)}
+    onContextMenu={onContext(row, col)}>  
     </div>
 };
 
