@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { GenerateCells } from "../../utils";
+import { Generatecells, openMultipleCells } from "../../utils";
 import NumberDisplay from "../NumberDisplay";
 import Button from "../Button"
 import "./App.scss";
-import { Cell, CellState, Face } from "../../types";
+import { Cell, CellState, CellValue, Face } from "../../types";
 
 
 
 const App: React.FC = () => {
-  const [cells, setCells] = useState<Cell[][]>(GenerateCells());
+  const [cells, setCells] = useState<Cell[][]>(Generatecells());
   const [face, setFace] = useState<Face>(Face.smile);
   const [time, setTime] = useState<number>(0);
   const [live, setLive] = useState<boolean>(false);
@@ -45,40 +45,57 @@ const App: React.FC = () => {
     if (!live) {
       setLive(true);
     }
+    const currentCell = cells[rowParam][colParam];
+    let newCell = cells.slice();
+
+    if (
+      [CellState.flagged, CellState.visible].includes(currentCell.state)) {
+      return;
+    }
+
+    if (currentCell.value === CellValue.bomb) {
+
+    } else if (currentCell.value === CellValue.none) {
+      newCell = openMultipleCells(newCell, rowParam, colParam);
+      setCells(newCell);
+    } else {
+      newCell[rowParam][colParam].state = CellState.visible;
+      setCells(newCell);
+    }
   };
 
   const handleCellContext = (
     rowParam: number,
     colParam: number
-  ) => (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+  ) => function (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
     e.preventDefault();
 
     if (!live) {
       return;
     }
 
-    const currentCells = cells.slice ();
+    const currentCells = cells.slice();
     const currentCell = cells[rowParam][colParam];
 
     if (currentCell.state === CellState.visible) {
-      return ;
+      return;
     } else if (currentCell.state === CellState.open) {
       currentCells[rowParam][colParam].state = CellState.flagged;
       setCells(currentCells);
-      setBombCounter(bombCounter - 1 );
-    } else if ( currentCell.state === CellState.flagged) {
-      currentCells[rowParam][colParam].state = CellState.flagged;
+      setBombCounter(bombCounter - 1);
+    } else if (currentCell.state === CellState.flagged) {
+      currentCells[rowParam][colParam].state = CellState.open;
       setCells(currentCells);
-      setBombCounter(bombCounter + 1 );
-    }
+      setBombCounter(bombCounter + 1);
+    };
 
   };
 
   const handleFaceClick = (): void => {
     if (live && time < 999) {
-      setLive(false); 
+      setLive(false);
       setTime(0);
-      setCells(GenerateCells());
+      setCells(Generatecells());
     }
   }
 

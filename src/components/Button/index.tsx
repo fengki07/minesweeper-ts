@@ -11,18 +11,19 @@ interface Buttonprops {
   value: CellValue;
 }
 
-const Button: React.FC<Buttonprops> = ({ row, col,onClick,onContext, state, value }) => {
+const Button: React.FC<Buttonprops> = ({ row, col, onContext, onClick, state, value }) => {
   const renderContent = (): React.ReactNode => {
     if (state === CellState.visible) {
       if (value === CellValue.bomb) {
         return (
           <span role="img" aria-label="bomb">
-             💣
+            💣
           </span>
         );
       } else if (value === CellValue.none) {
-        return null ;
+        return null;
       }
+
       return value;
     } else if (state === CellState.flagged) {
       return (
@@ -32,12 +33,15 @@ const Button: React.FC<Buttonprops> = ({ row, col,onClick,onContext, state, valu
       );
 
     }  
-    return null ;
+    
+    return null;
   }
   
   return <div className={`Button ${state === CellState.visible ? "visible" : "" } value-${value}`} 
     onClick={onClick(row, col)}
-    onContextMenu={onContext(row, col)}>  
+    onContextMenu={onContext(row, col)}
+    >  
+    {renderContent()}
     </div>
 };
 
